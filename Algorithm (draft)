@@ -78,7 +78,7 @@ public class MapColoring<E> extends Graph<E> {
 
 	}
 
-	static int largest(int[] testarray) {// to calculate the number of colors used
+	private int largest(int[] testarray) {// to calculate the number of colors used
 		int i;
 
 		// Initialize maximum element
