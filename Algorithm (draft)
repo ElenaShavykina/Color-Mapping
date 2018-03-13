@@ -1,0 +1,141 @@
+
+/**
+ *a subclass of Graph. Color Mapping algorithm
+ * 
+ * @author Elena Shavykina 03/13/2018 Eclipse (operating system)
+ * 
+ */
+
+import java.util.*;
+import java.util.Map.Entry;
+
+
+public class MapColoring <E> extends Graph<E>{
+	private static String colors[] = {"","RED","BLUE", "YELLOW", "GREEN", "ORANGE"};
+	private HashMap<Integer, Vertex<E>> NumberToVertex;
+	 private HashMap<Vertex<E>,Integer> VertexToNumber;
+	
+	
+	private HashMap<Vertex <E>, Integer> toNumbers(int position) {
+		 
+		 NumberToVertex = new HashMap<>(vertexSet.size());
+		 VertexToNumber = new HashMap<>(vertexSet.size());
+		 Iterator<Entry<E, Vertex<E>>> iter;
+	      iter = vertexSet.entrySet().iterator();
+	      while( iter.hasNext() )
+	      {	Vertex<E> addVer = iter.next().getValue();
+	    	 NumberToVertex.put(position, addVer);
+	 		 VertexToNumber.put(addVer, position);
+	 		 position++;
+	      }
+	      return VertexToNumber;
+		 }
+	
+	
+
+	
+	private boolean isValid ( int c, int position, int[]colored){
+		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter =
+				NumberToVertex.get(position).adjList.entrySet().iterator(); // iterate adjacency list
+	      
+		   while( iter.hasNext() )
+		   {
+			   Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter.next();
+			   Vertex<E> neighborVertex = nextEntry.getValue().first;
+			   if(colored[VertexToNumber.get(neighborVertex)] == c )
+			   {return false;}
+			
+		   }
+		   return true;	
+	
+	}
+
+	public void TestColoring(int position){
+		int []colored = new int [vertexSet.size()];
+		this.toNumbers(position);
+		KColorable(3, 0, colored);
+	}
+	
+	private void KColorable( int numColors,int position, int[]colored) {
+	if (position == vertexSet.size()){
+		for (int i = 0; i < vertexSet.size();i++){
+		
+			System.out.println(NumberToVertex.get(i).getData() + "  " + colors[colored[i]]);
+			
+			}
+		System.out.println("Number of colors used is " + largest(colored));	
+		System.out.println();
+	return;}
+		
+		for (int c= 1; c<= numColors; c++ ){
+			   if (isValid(c, position, colored)){
+				   colored [position] = c;
+				   KColorable( numColors, position+1, colored); //recursion
+				   colored[position]=0;return;}
+				  }
+		
+}
+
+	static int largest(int[]testarray)
+    {
+        int i;
+         
+        // Initialize maximum element
+        int max = testarray[0];
+      
+        // Traverse array elements from second and
+        // compare every element with current max  
+        for (i = 1; i < testarray.length; i++)
+            if (testarray[i] > max)
+                max = testarray[i];
+      
+        return max;
+    }
+			
+	} 
+/*
+------------------------ 
+Adj List for A: B(0.0) C(0.0) D(0.0) 
+Adj List for B: A(0.0) E(0.0) F(0.0) Z(0.0) 
+Adj List for C: A(0.0) E(0.0) G(0.0) 
+Adj List for D: A(0.0) H(0.0) I(0.0) 
+Adj List for E: B(0.0) C(0.0) 
+Adj List for F: B(0.0) J(0.0) K(0.0) 
+Adj List for G: C(0.0) V(0.0) K(0.0) L(0.0) M(0.0) 
+Adj List for H: D(0.0) M(0.0) N(0.0) 
+Adj List for I: D(0.0) K(0.0) N(0.0) 
+Adj List for J: Q(0.0) F(0.0) 
+Adj List for K: F(0.0) G(0.0) I(0.0) 
+Adj List for L: G(0.0) 
+Adj List for M: G(0.0) H(0.0) N(0.0) 
+Adj List for N: H(0.0) I(0.0) M(0.0) 
+Adj List for O: P(0.0) V(0.0) 
+Adj List for P: O(0.0) 
+Adj List for Q: J(0.0) 
+Adj List for V: G(0.0) O(0.0) 
+Adj List for X: Z(0.0) 
+Adj List for Z: B(0.0) X(0.0) 
+
+A  RED
+B  BLUE
+C  BLUE
+D  BLUE
+E  RED
+F  RED
+G  RED
+H  RED
+I  RED
+J  BLUE
+K  BLUE
+L  BLUE
+M  BLUE
+N  YELLOW
+O  RED
+P  BLUE
+Q  RED
+V  BLUE
+X  RED
+Z  YELLOW
+Number of colors used is 3
+
+*/
