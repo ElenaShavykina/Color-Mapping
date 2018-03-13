@@ -14,6 +14,13 @@ public class MapColoring<E> extends Graph<E> {
 	private HashMap<Integer, Vertex<E>> NumberToVertex;
 	private HashMap<Vertex<E>, Integer> VertexToNumber;
 	
+	//initialize the coloring . create an array for colored vertices (position is a a vertex)
+	public void TestColoring(int position) {
+		int[] colored = new int[vertexSet.size()];
+		this.toNumbers(position);
+		KColorable(3, 0, colored);
+	}
+	
 	// to give a vertex an index number we create two HashMaps 
 	private HashMap<Vertex<E>, Integer> toNumbers(int position) {
 
@@ -47,12 +54,7 @@ public class MapColoring<E> extends Graph<E> {
 		return true;
 
 	}
-//initialize the coloring . create an array for colored vertices (position is a a vertex)
-	public void TestColoring(int position) {
-		int[] colored = new int[vertexSet.size()];
-		this.toNumbers(position);
-		KColorable(3, 0, colored);
-	}
+
 
 	private void KColorable(int numColors, int position, int[] colored) {//number of colors could be used, initial position of the first Vertex, arary with colored vertexes)
 		if (position == vertexSet.size()) {//print the result of a method if all the vertices are colored)
